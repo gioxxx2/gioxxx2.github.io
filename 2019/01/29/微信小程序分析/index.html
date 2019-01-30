@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="小程序,">
+  <meta name="keywords" content="架构设计,性能优化,">
 
 
 
@@ -79,31 +79,31 @@
 
 
 
-<meta name="description" content="微信小程序一、小程序架构图  视图层和逻辑层通过系统层的JSBridage进行通信，逻辑层把数据变化通知到视图层，触发视图层页面更新，视图层把触发的事件通知到逻辑层进行业务处理。 程序的UI视图和逻辑处理是用多个webview实现的，逻辑处理的JS代码全部加载到一个Webview里面，称之为AppService，整个小程序只有一个，并且整个生命周期常驻内存，而所有的视图（wxml和wxss）都是单">
-<meta name="keywords" content="小程序">
+<meta name="description" content="微信小程序本文主要是分析微信小程序的架构设计和性能优化。">
+<meta name="keywords" content="架构设计,性能优化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微信小程序分析">
-<meta property="og:url" content="http://yoursite.com/2019/01/30/微信小程序分析/index.html">
+<meta property="og:url" content="http://yoursite.com/2019/01/29/微信小程序分析/index.html">
 <meta property="og:site_name" content="stillStruggle">
-<meta property="og:description" content="微信小程序一、小程序架构图  视图层和逻辑层通过系统层的JSBridage进行通信，逻辑层把数据变化通知到视图层，触发视图层页面更新，视图层把触发的事件通知到逻辑层进行业务处理。 程序的UI视图和逻辑处理是用多个webview实现的，逻辑处理的JS代码全部加载到一个Webview里面，称之为AppService，整个小程序只有一个，并且整个生命周期常驻内存，而所有的视图（wxml和wxss）都是单">
+<meta property="og:description" content="微信小程序本文主要是分析微信小程序的架构设计和性能优化。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2019/01/30/微信小程序分析/15459889147071.jpg">
-<meta property="og:image" content="http://yoursite.com/2019/01/30/微信小程序分析/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-12-28%20%E4%B8%8B%E5%8D%887.05.45.png">
-<meta property="og:image" content="http://yoursite.com/2019/01/30/微信小程序分析/15460533639446.jpg">
-<meta property="og:image" content="http://yoursite.com/2019/01/30/微信小程序分析/15459852913980.png">
-<meta property="og:image" content="http://yoursite.com/2019/01/30/微信小程序分析/15459880668117.png">
-<meta property="og:image" content="http://yoursite.com/2019/01/30/微信小程序分析/15460670198604.jpg">
-<meta property="og:image" content="http://yoursite.com/2019/01/30/微信小程序分析/15460677491598.jpg">
-<meta property="og:image" content="http://yoursite.com/2019/01/30/微信小程序分析/15460683637804.jpg">
-<meta property="og:image" content="http://yoursite.com/2019/01/30/微信小程序分析/15460684802193.jpg">
-<meta property="og:image" content="http://yoursite.com/2019/01/30/微信小程序分析/15460700570029.jpg">
-<meta property="og:image" content="http://yoursite.com/2019/01/30/微信小程序分析/15460702515772.jpg">
-<meta property="og:image" content="http://yoursite.com/2019/01/30/微信小程序分析/15460704651605.jpg">
-<meta property="og:updated_time" content="2019-01-30T02:57:07.488Z">
+<meta property="og:image" content="http://yoursite.com/2019/01/29/微信小程序分析/15459889147071.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/01/29/微信小程序分析/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-12-28%20%E4%B8%8B%E5%8D%887.05.45.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/29/微信小程序分析/15460533639446.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/01/29/微信小程序分析/15459852913980.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/29/微信小程序分析/15459880668117.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/29/微信小程序分析/15460670198604.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/01/29/微信小程序分析/15460677491598.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/01/29/微信小程序分析/15460683637804.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/01/29/微信小程序分析/15460684802193.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/01/29/微信小程序分析/15460700570029.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/01/29/微信小程序分析/15460702515772.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/01/29/微信小程序分析/15460704651605.jpg">
+<meta property="og:updated_time" content="2019-01-30T11:25:05.585Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微信小程序分析">
-<meta name="twitter:description" content="微信小程序一、小程序架构图  视图层和逻辑层通过系统层的JSBridage进行通信，逻辑层把数据变化通知到视图层，触发视图层页面更新，视图层把触发的事件通知到逻辑层进行业务处理。 程序的UI视图和逻辑处理是用多个webview实现的，逻辑处理的JS代码全部加载到一个Webview里面，称之为AppService，整个小程序只有一个，并且整个生命周期常驻内存，而所有的视图（wxml和wxss）都是单">
-<meta name="twitter:image" content="http://yoursite.com/2019/01/30/微信小程序分析/15459889147071.jpg">
+<meta name="twitter:description" content="微信小程序本文主要是分析微信小程序的架构设计和性能优化。">
+<meta name="twitter:image" content="http://yoursite.com/2019/01/29/微信小程序分析/15459889147071.jpg">
 
 
 
@@ -133,7 +133,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/01/30/微信小程序分析/">
+  <link rel="canonical" href="http://yoursite.com/2019/01/29/微信小程序分析/">
 
 
 
@@ -266,7 +266,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/30/微信小程序分析/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/29/微信小程序分析/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="stillStruggle">
@@ -295,8 +295,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-30T10:50:26+08:00">
-                2019-01-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-29T10:50:26+08:00">
+                2019-01-29
               </time>
             
 
@@ -355,13 +355,15 @@
       
 
       
-        <h1 id="微信小程序"><a href="#微信小程序" class="headerlink" title="微信小程序"></a>微信小程序</h1><h2 id="一、小程序架构图"><a href="#一、小程序架构图" class="headerlink" title="一、小程序架构图"></a>一、小程序架构图</h2><p><img src="/2019/01/30/微信小程序分析/15459889147071.jpg" alt=""></p>
+        <h1 id="微信小程序"><a href="#微信小程序" class="headerlink" title="微信小程序"></a>微信小程序</h1><p>本文主要是分析微信小程序的架构设计和性能优化。</p>
+<a id="more"></a>
+<h2 id="一、小程序架构图"><a href="#一、小程序架构图" class="headerlink" title="一、小程序架构图"></a>一、小程序架构图</h2><p><img src="/2019/01/29/微信小程序分析/15459889147071.jpg" alt=""></p>
 <ul>
 <li>视图层和逻辑层通过系统层的JSBridage进行通信，逻辑层把数据变化通知到视图层，触发视图层页面更新，视图层把触发的事件通知到逻辑层进行业务处理。</li>
 <li>程序的UI视图和逻辑处理是用多个webview实现的，逻辑处理的JS代码全部加载到一个Webview里面，称之为AppService，整个小程序只有一个，并且整个生命周期常驻内存，而所有的视图（wxml和wxss）都是单独的Webview来承载，称之为AppView。所以一个小程序打开至少就会有2个webview进程，正是因为每个视图都是一个独立的webview进程，考虑到性能消耗，小程序不允许打开超过5个层级的页面，当然同是也是为了体验更好。</li>
 <li>小程序由配置代码JSON文件、模板代码 WXML 文件、样式代码 WXSS文件以及逻辑代码 JavaScript文件组成。</li>
 </ul>
-<h2 id="二、小程序文件结构"><a href="#二、小程序文件结构" class="headerlink" title="二、小程序文件结构"></a>二、小程序文件结构</h2><p><img src="/2019/01/30/微信小程序分析/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-12-28%20%E4%B8%8B%E5%8D%887.05.45.png" alt="屏幕快照 2018-12-28 下午7.05.45"></p>
+<h2 id="二、小程序文件结构"><a href="#二、小程序文件结构" class="headerlink" title="二、小程序文件结构"></a>二、小程序文件结构</h2><p><img src="/2019/01/29/微信小程序分析/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-12-28%20%E4%B8%8B%E5%8D%887.05.45.png" alt="屏幕快照 2018-12-28 下午7.05.45"></p>
 <ul>
 <li><p>我们开发编写的文件分三种wxml、wxss、js，WXML代码最终变成一个JavaScript 函数，预先注入在WebView中。在运行时确定了页面路径之后，将路径作为参数传递给这个函数得到该页面的结构生成函数，页面结构生成函数接受页面数据，输出一段描述页面结构的JSON，然后根据WAWebview.js里面的定义转成自定义HTML标签或者原生控件。wxss转成最终的css样式，这里就是拿的<a href="https://weui.io/" target="_blank" rel="noopener">weui</a>那一套。js转成真正的js代码。最后都会转成一个文件page-frame.html。</p>
 </li>
@@ -377,7 +379,7 @@
 <li><strong>渲染生成页面。</strong>微信客户端装载页面的<em>.js文件，根据文件里的页面构造器Page生成页面。在生成页面的时候，小程序框架会把Page里的 data 数据结合页面的</em>.wxml文件一起渲染出最终的页面。</li>
 <li><strong>执行onLoad 回调。</strong>在渲染完页面之后，页面实例（Page）就会收到一个 onLoad 的回调，可以在这个回调处理一些业务逻辑。</li>
 </ol>
-<p><img src="/2019/01/30/微信小程序分析/15460533639446.jpg" alt=""></p>
+<p><img src="/2019/01/29/微信小程序分析/15460533639446.jpg" alt=""></p>
 <h2 id="四、小程序生命周期"><a href="#四、小程序生命周期" class="headerlink" title="四、小程序生命周期"></a>四、小程序生命周期</h2><ul>
 <li>初次进入小程序的时候，微信客户端初始化好宿主环境，同时从网络下载或者从本地缓存中拿到小程序的代码包，把它注入到宿主环境，初始化完毕后，微信客户端就会给App实例派发onLaunch事件，App构造器参数所定义的onLaunch方法会被调用。</li>
 <li>进入小程序之后，用户可以点击左上角的关闭，或者按手机设备的Home键离开小程序，此时小程序并没有被直接销毁，我们把这种情况称为“小程序进入后台状态”，App构造器参数所定义的onHide方法会被调用。</li>
@@ -386,7 +388,7 @@
 <li>在微信客户端中打开小程序有很多途径，针对不同途径的打开方式，微信客户端会把打开方式带给onLaunch和onShow的调用参数options。</li>
 <li>小程序没有重启的概念，当小程序进入后台，微信客户端会维持一段时间小程序的运行状态，超过一定时间后小程序（目前是5分钟）会被微信客户端主动销毁。</li>
 </ul>
-<h2 id="五、小程序双线程模型"><a href="#五、小程序双线程模型" class="headerlink" title="五、小程序双线程模型"></a>五、小程序双线程模型</h2><p>小程序的渲染层和逻辑层分别由 2 个线程管理：渲染层的界面使用了 WebView 进行渲染，逻辑层采用 JsCore 线程运行 JS 脚本。WXML 模板和 WXSS 样式工作在渲染层，JS 脚本工作在逻辑层。<br><img src="/2019/01/30/微信小程序分析/15459852913980.png" alt=""></p>
+<h2 id="五、小程序双线程模型"><a href="#五、小程序双线程模型" class="headerlink" title="五、小程序双线程模型"></a>五、小程序双线程模型</h2><p>小程序的渲染层和逻辑层分别由 2 个线程管理：渲染层的界面使用了 WebView 进行渲染，逻辑层采用 JsCore 线程运行 JS 脚本。WXML 模板和 WXSS 样式工作在渲染层，JS 脚本工作在逻辑层。<br><img src="/2019/01/29/微信小程序分析/15459852913980.png" alt=""></p>
 <ul>
 <li>逻辑层：创建一个单独的线程去执行 JavaScript，在这个环境下执行的都是有关小程序业务逻辑的代码。iOS下的 JavaScriptCore 框架，由 WKWebView 来渲染的，环境有 iOS8、iOS9、iOS10，安卓下腾讯 x5 内核提供的 JsCore 环境, 而X5 是基于 Mobile Chrome 37 内核来渲染的。通过提供一个沙箱环境来运行开发者的 JavaScript 代码来解决。这个沙箱环境只提供纯 JavaScript 的解释执行环境，没有任何浏览器相关接口。</li>
 <li>渲染层：界面渲染相关的任务全都在 WebView 线程里执行，通过逻辑层代码去控制渲染哪些界面。一个小程序存在多个界面，所以渲染层存在多个 WebView 线程</li>
@@ -395,7 +397,7 @@
 <ol>
 <li>在渲染层把 WXML 转化成对应的 JS 对象。</li>
 <li>在逻辑层发生数据变更的时候，通过宿主环境提供的 setData 方法把数据从逻辑层传递到 Native，再转发到渲染层。</li>
-<li>经过对比前后差异，把差异应用在原来的 DOM 树上，更新界面。<br><img src="/2019/01/30/微信小程序分析/15459880668117.png" alt=""></li>
+<li>经过对比前后差异，把差异应用在原来的 DOM 树上，更新界面。<br><img src="/2019/01/29/微信小程序分析/15459880668117.png" alt=""></li>
 </ol>
 <p><strong>小程序使用Hybrid 技术来渲染界面，界面主要由webview渲染,每个小程序页面都是用不同的WebView去渲染,内置组件有一部份较复杂组件是用客户端原生渲染的。</strong></p>
 <p>把 WXML 转化为数据，通过 Native 进行转发，来实现逻辑层和渲染层的交互和通信,是通过小程序的基础库来完成。有两个工具 wcc，wcsc。wcc 可把 wxml 转换为对应的 JS 函数，wcsc 可将 wxss 转换为 css。</p>
@@ -454,7 +456,7 @@
 <li>合理使用setData调用，减少setData次数和数据量；</li>
 <li>必要时使用分包优化。</li>
 </ol>
-<h3 id="1-启动角度"><a href="#1-启动角度" class="headerlink" title="1. 启动角度"></a>1. 启动角度</h3><p><img src="/2019/01/30/微信小程序分析/15460670198604.jpg" alt=""></p>
+<h3 id="1-启动角度"><a href="#1-启动角度" class="headerlink" title="1. 启动角度"></a>1. 启动角度</h3><p><img src="/2019/01/29/微信小程序分析/15460670198604.jpg" alt=""></p>
 <h4 id="1-1-代码包下载"><a href="#1-1-代码包下载" class="headerlink" title="1.1 代码包下载"></a>1.1 代码包下载</h4><p>在某个小程序第一次启动时，微信需要下载小程序代码包。此后，如果小程序代码包未更新且还被保留在缓存中，则下载小程序代码包的步骤会被跳过。下载到的小程序代码包不是小程序的源代码，而是编译、压缩、打包之后的代码包。控制代码包大小有助于减少小程序的启动时间。</p>
 <ol>
 <li>精简代码，去掉不必要的WXML结构和未使用的WXSS定义。</li>
@@ -465,7 +467,7 @@
 <h4 id="1-3-代码包加载"><a href="#1-3-代码包加载" class="headerlink" title="1.3 代码包加载"></a>1.3 代码包加载</h4><p>小程序的代码包被下载（或从缓存中读取）完成后，小程序的代码会被加载到适当的线程中执行。此时，所有app.js、页面所在的JS文件和所有其他被require的JS文件会被自动执行一次，小程序基础库会完成所有页面的注册。在小程序代码调用Page构造器的时候，小程序基础库会记录页面的基础信息，如初始数据（data）、方法等。需要注意的是，如果一个页面被多次创建，并不会使得这个页面所在的JS文件被执行多次，而仅仅是根据初始数据多生成了一个页面实例（this），在页面JS文件中直接定义的变量，在所有这个页面的实例间是共享的。</p>
 <h4 id="1-4-页面层级准备（预加载）"><a href="#1-4-页面层级准备（预加载）" class="headerlink" title="1.4 页面层级准备（预加载）"></a>1.4 页面层级准备（预加载）</h4><p>在视图层内，小程序的每一个页面都独立运行在一个页面层级上。对于每一个新的页面层级，视图层都需要进行一些额外的准备工作。在小程序启动前，微信会提前准备好一个页面层级用于展示小程序的首页。除此以外，每当一个页面层级被用于渲染页面，微信都会提前开始准备一个新的页面层级，使得每次调用wx.navigateTo都能够尽快展示一个新的页面。相对地，wx.navigateBack会销毁一个页面层级。</p>
 <p>对于wx.redirectTo，这个调用不会打开一个新的页面层级，而是将当前页面层级重新初始化：重新传入页面的初始数据、路径等，视图层清空当前页面层级的渲染结果然后重新渲染页面。</p>
-<p><img src="/2019/01/30/微信小程序分析/15460677491598.jpg" alt=""></p>
+<p><img src="/2019/01/29/微信小程序分析/15460677491598.jpg" alt=""></p>
 <p>页面层级的准备工作分为三个阶段</p>
 <ol>
 <li>启动一个WebView，在iOS和Android系统上，操作系统启动WebView都需要一小段时间。</li>
@@ -474,9 +476,9 @@
 </ol>
 <h3 id="2-数据通信"><a href="#2-数据通信" class="headerlink" title="2.数据通信"></a>2.数据通信</h3><p>在每个小程序页面的生命周期中，存在着若干次页面数据通信。逻辑层向视图层发送页面数据（data和setData的内容），视图层向逻辑层反馈用户事件。</p>
 <h4 id="2-1-页面初始化数据通信"><a href="#2-1-页面初始化数据通信" class="headerlink" title="2.1 页面初始化数据通信"></a>2.1 页面初始化数据通信</h4><p>在小程序启动或一个新的页面被打开时，页面的初始数据（data）和路径等相关信息会从逻辑层发送给视图层，用于视图层的初始渲染。Native层会将这些数据直接传递给视图层，同时向用户展示一个新的页面层级，视图层在这个页面层级上进行界面绘制。视图层接收到相关数据后，根据页面路径来选择合适的WXML结构，WXML结构与初始数据相结合，得到页面的第一次渲染结果。</p>
-<p><img src="/2019/01/30/微信小程序分析/15460683637804.jpg" alt=""></p>
+<p><img src="/2019/01/29/微信小程序分析/15460683637804.jpg" alt=""></p>
 <p>页面初始化的时间大致由页面初始数据通信时间和初始渲染时间两部分构成。其中，数据通信的时间指数据从逻辑层开始组织数据到视图层完全接收完毕的时间，数据量小于64KB时总时长可以控制在30ms内。传输时间与数据量大体上呈现正相关关系，传输过大的数据将使这一时间显著增加。因而减少传输数据量是降低数据传输时间的有效方式。</p>
-<p><img src="/2019/01/30/微信小程序分析/15460684802193.jpg" alt=""></p>
+<p><img src="/2019/01/29/微信小程序分析/15460684802193.jpg" alt=""></p>
 <h4 id="2-2-更新数据通信"><a href="#2-2-更新数据通信" class="headerlink" title="2.2 更新数据通信"></a>2.2 更新数据通信</h4><p>初始渲染完毕后，视图层可以在开发者调用setData后执行界面更新。在数据传输时，逻辑层会执行一次JSON.stringify来去除掉setData数据中不可传输的部分，之后将数据发送给视图层。同时，逻辑层还会将setData所设置的数据字段与data合并，使开发者可以用this.data读取到变更后的数据。</p>
 <p>对于开发者来说，执行setData调用，最好的原则是：</p>
 <ol>
@@ -492,13 +494,13 @@
 </ol>
 <h3 id="3-视图层渲染"><a href="#3-视图层渲染" class="headerlink" title="3.视图层渲染"></a>3.视图层渲染</h3><p>视图层在接收到初始数据（data）和更新数据（setData数据）时，需要进行视图层渲染。在一个页面的生命周期中，视图层会收到一份初始数据和多份更新数据。收到初始数据时需要执行初始渲染，每次收到更新数据时需要执行重渲染。</p>
 <h4 id="3-1-初始渲染"><a href="#3-1-初始渲染" class="headerlink" title="3.1 初始渲染"></a>3.1 初始渲染</h4><p>初始渲染时，将初始数据套用在对应的WXML片段上生成节点树。它包含页面内所有组件节点的名称、属性值和事件回调函数等信息。最后根据节点树包含的各个节点，在界面上依次创建出各个组件。</p>
-<p><img src="/2019/01/30/微信小程序分析/15460700570029.jpg" alt=""></p>
+<p><img src="/2019/01/29/微信小程序分析/15460700570029.jpg" alt=""></p>
 <p>在这整个流程中，时间开销大体上与节点树中节点的总量成正比例关系。因而减少WXML中节点的数量可以有效降低初始渲染和重渲染的时间开销，提升渲染性能。</p>
 <h4 id="3-2-重渲染"><a href="#3-2-重渲染" class="headerlink" title="3.2 重渲染"></a>3.2 重渲染</h4><p>初始渲染完毕后，视图层可以多次应用setData的数据。每次应用setData数据时，都会执行重渲染来更新界面。<br>初始渲染中得到的data和当前节点树会保留下来用于重渲染。每次重渲染时，将data和setData数据套用在WXML片段上，得到一个新节点树。然后将新节点树与当前节点树进行比较，这样可以得到哪些节点的哪些属性需要更新、哪些节点需要添加或移除。最后，将setData数据合并到data中，并用新节点树替换旧节点树，用于下一次重渲染。</p>
-<p><img src="/2019/01/30/微信小程序分析/15460702515772.jpg" alt=""></p>
+<p><img src="/2019/01/29/微信小程序分析/15460702515772.jpg" alt=""></p>
 <p>在进行当前节点树与新节点树的比较时，会着重比较setData数据影响到的节点属性。因而，去掉不必要设置的数据、减少setData的数据量也有助于提升这一个步骤的性能。</p>
 <h3 id="4-原生组件通信"><a href="#4-原生组件通信" class="headerlink" title="4.原生组件通信"></a>4.原生组件通信</h3><p>生组件支持使用context来更新组件。不同于setData，使用context来更新组件并不会涉及到重渲染过程，数据通信过程也不同。在setData的数据通信流程中，数据从逻辑层经过native层转发，传入视图层的WebView，再经过一系列渲染步骤之后传入组件。而使用context时，数据从逻辑层传到native层后，直接传入组件中，这样可以显著降低传输延迟。</p>
-<p><img src="/2019/01/30/微信小程序分析/15460704651605.jpg" alt=""></p>
+<p><img src="/2019/01/29/微信小程序分析/15460704651605.jpg" alt=""></p>
 <p>在具体通信过程上，因为context的方法繁多，通信方式相对于setData更复杂。所以基础库会对context方法调用时的通信进行封装优化。</p>
 <p>参考出处：<br><a href="http://www.alonemonkey.com/2017/01/18/wechat-small-program/" target="_blank" rel="noopener">http://www.alonemonkey.com/2017/01/18/wechat-small-program/</a><br><a href="https://developers.weixin.qq.com/ebook?action=get_post_info&amp;token=935589521&amp;volumn=1&amp;lang=zh_CN&amp;book=miniprogram&amp;docid=0000e82f924ca0bb00869a5de5ec0a" target="_blank" rel="noopener">小程序开发指南</a><br><a href="https://blog.csdn.net/xiangzhihong8/article/details/66521459" target="_blank" rel="noopener">https://blog.csdn.net/xiangzhihong8/article/details/66521459</a></p>
 
@@ -528,7 +530,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/小程序/" rel="tag"><i class="fa fa-tag"></i> 小程序</a>
+            <a href="/tags/架构设计/" rel="tag"><i class="fa fa-tag"></i> 架构设计</a>
+          
+            <a href="/tags/性能优化/" rel="tag"><i class="fa fa-tag"></i> 性能优化</a>
           
         </div>
       
@@ -541,15 +545,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2019/01/25/Hexo使用/" rel="next" title="Hexo使用">
+                <i class="fa fa-chevron-left"></i> Hexo使用
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/01/30/Hexo使用/" rel="prev" title="Hexo使用">
-                Hexo使用 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -650,7 +654,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
