@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="汇编,ARM64,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文主要整理ARM64汇编基础知识，因为之前做逆向开发和调试系统栈的时候，都需要汇编相关的知识，做此整理，以供后续查阅。掌握汇编对于突破iOS开发水平的瓶颈十分有效。">
+<meta name="keywords" content="汇编,ARM64">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ARM64汇编入门与应用">
+<meta property="og:url" content="http://yoursite.com/2019/02/01/ARM64汇编基础/index.html">
+<meta property="og:site_name" content="stillStruggle&#39;s Blog">
+<meta property="og:description" content="本文主要整理ARM64汇编基础知识，因为之前做逆向开发和调试系统栈的时候，都需要汇编相关的知识，做此整理，以供后续查阅。掌握汇编对于突破iOS开发水平的瓶颈十分有效。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-02-01%20%E4%B8%8B%E5%8D%887.16.01.png">
+<meta property="og:image" content="http://yoursite.com/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-02-01%20%E4%B8%8A%E5%8D%8811.24.17.png">
+<meta property="og:image" content="http://yoursite.com/images/F2E5ED94-9E1C-43F1-ABF7-6152D3C826E5.png">
+<meta property="og:image" content="http://yoursite.com/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-02-01%20%E4%B8%8B%E5%8D%887.50.54.png">
+<meta property="og:image" content="http://yoursite.com/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-02-01%20%E4%B8%8B%E5%8D%887.53.21.png">
+<meta property="og:image" content="http://yoursite.com/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-02-01%20%E4%B8%8B%E5%8D%887.55.23.png">
+<meta property="og:image" content="http://yoursite.com/images/%E6%8C%87%E4%BB%A4%E5%88%97%E8%A1%A801.png">
+<meta property="og:image" content="http://yoursite.com/images/%E6%8C%87%E4%BB%A4%E5%88%97%E8%A1%A802.png">
+<meta property="og:updated_time" content="2019-02-01T12:05:48.054Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ARM64汇编入门与应用">
+<meta name="twitter:description" content="本文主要整理ARM64汇编基础知识，因为之前做逆向开发和调试系统栈的时候，都需要汇编相关的知识，做此整理，以供后续查阅。掌握汇编对于突破iOS开发水平的瓶颈十分有效。">
+<meta name="twitter:image" content="http://yoursite.com/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-02-01%20%E4%B8%8B%E5%8D%887.16.01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/01/ARM64汇编基础/">
+
+
+
+
+
+  <title>ARM64汇编入门与应用 | stillStruggle's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">stillStruggle's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/01/ARM64汇编基础/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="stillStruggle">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="stillStruggle's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ARM64汇编入门与应用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-01T10:47:23+08:00">
+                2019-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文主要整理ARM64汇编基础知识，因为之前做逆向开发和调试系统栈的时候，都需要汇编相关的知识，做此整理，以供后续查阅。掌握汇编对于突破iOS开发水平的瓶颈十分有效。</p>
+<a id="more"></a>
+<h2 id="逆向中的反调试"><a href="#逆向中的反调试" class="headerlink" title="逆向中的反调试"></a>逆向中的反调试</h2><p><strong>ptrace</strong></p>
+<p>为了方便应用软件的开发和调试，从Unix的早期版本开始就提供了一种对运行中的进程进行跟踪和控制的手段，那就是系统调用ptrace()。<br>通过ptrace可以对另一个进程实现调试跟踪，同时ptrace还提供了一个非常有用的参数那就是PT_DENY_ATTACH，这个参数用来告诉系统，阻止调试器依附。</p>
+<p>所以最常用的反调试方案就是通过调用ptrace来实现反调试。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ptrace(31, 0, 0, 0)</span><br></pre></td></tr></table></figure>
+<p>这种方式能够被函数hook轻易破解，例如使用facebook的<a href="https://github.com/facebook/fishhook" target="_blank" rel="noopener">fishhook</a>。 为了防止函数被hook，我们可以将函数调用转为通过汇编发起系统调用，即使用下面的代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mov x0, #31</span><br><span class="line">mov x1, #0</span><br><span class="line">mov x2, #0</span><br><span class="line">mov x3, #0</span><br><span class="line">mov x16, #26</span><br><span class="line">svc #0x80</span><br></pre></td></tr></table></figure>
+<p>其中x0-x3存储的为函数入参，x16存储的为函数编号，通过Apple提供的<a href="https://www.theiphonewiki.com/wiki/Kernel_Syscalls" target="_blank" rel="noopener">System Call Table</a> 可以查出ptrace的编号为26，最后一句指令发起了系统调用。 通过使用<strong>asm</strong>指令能够将汇编代码嵌入我们的函数中，构成反调试方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// 使用inline方式将函数在调用处强制展开，防止被hook和追踪符号</span><br><span class="line">static __attribute__((always_inline)) void anti_debug() &#123;</span><br><span class="line">// 判断是否是ARM64处理器指令集</span><br><span class="line">#ifdef __arm64__</span><br><span class="line">    // volatile修饰符能够防止汇编指令被编译器忽略</span><br><span class="line">    __asm__ __volatile__(</span><br><span class="line">                         &quot;mov x0, #31\n&quot;</span><br><span class="line">                         &quot;mov x1, #0\n&quot;</span><br><span class="line">                         &quot;mov x2, #0\n&quot;</span><br><span class="line">                         &quot;mov x3, #0\n&quot;</span><br><span class="line">                         &quot;mov x16, #26\n&quot;</span><br><span class="line">                         &quot;svc #0x80\n&quot;</span><br><span class="line">                         );</span><br><span class="line">#endif</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>虽然上面的反调试机制并不完善，但是比直接调用ptrace要好上很多倍，从这一点来看，掌握汇编技能对于iOS应用安全和底层研究非常有利。</p>
+<h2 id="ARM64入门"><a href="#ARM64入门" class="headerlink" title="ARM64入门"></a>ARM64入门</h2><p>汇编的所有指令操作都是围绕栈实现的，在汇编中，没有变量的概念，只有寄存器和内存。</p>
+<h3 id="ARM64寄存器"><a href="#ARM64寄存器" class="headerlink" title="ARM64寄存器"></a>ARM64寄存器</h3><p>r0 - r30 是31个通用整形寄存器。每个寄存器可以存取一个64位大小的数。 当使用 x0 - x30访问时，它就是一个64位的数。当使用 w0 - w30访问时，访问的是这些寄存器的低32位。</p>
+<p>其实通用寄存器有32个，第32个寄存器x31，在指令编码中，使用来做 zero register, 即ZR, XZR/WZR分别代表64/32位，zero register的作用就是0，写进去代表丢弃结果，拿出来是0。</p>
+<ul>
+<li><p>通用寄存器</p>
+<ul>
+<li>64bit: x0 - x28</li>
+<li>32bit: w0 - w28</li>
+<li>x0 – x7 分别会存放方法的前 8 个参数，如果参数个数超过了8个，多余的参数会存在栈上，新方法会通过栈来读取。</li>
+<li>方法的返回值一般都在 x0 上。</li>
+<li>如果方法返回值是一个较大的数据结构时，结果会存在 x8 执行的地址上。</li>
+</ul>
+</li>
+<li><p>程序计数器</p>
+<ul>
+<li>pc（Program Counter）寄存器中存的是当前执行的指令的地址, 记录CPU当前指令是哪一条指令。</li>
+</ul>
+</li>
+<li><p>堆栈指针（栈是从高地址到低地址的）</p>
+<ul>
+<li>sp（Stack Pointer）指向栈顶，也就是低地址。</li>
+<li>fp（Frame Pointer）指向当前frame的栈底，也就是高地址。也是x29。</li>
+</ul>
+</li>
+<li><p>链接寄存器</p>
+<ul>
+<li>lr（Link Register）存储函数返回地址。也就是x30。</li>
+</ul>
+</li>
+<li><p>状态寄存器</p>
+<ul>
+<li>在汇编中就需要根据状态寄存器中的一些状态来控制分支的执行。</li>
+<li>cpsr（Current Program Status Register）</li>
+<li>spsr（Saved Program Status Register）一般都是使用CPSR， 当发生异常时， CPSR会存入SPSR。当异常恢复，再拷贝回CPSR。</li>
+</ul>
+</li>
+</ul>
+<h3 id="ARM64常用指令"><a href="#ARM64常用指令" class="headerlink" title="ARM64常用指令"></a>ARM64常用指令</h3><p>查询某个指令如何使用，最好的方式是去查询ARM公司提供的<a href="http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0802a/STUR_fpsimd.html" target="_blank" rel="noopener">官方文档</a>，本文会简单介绍一些常用指令。</p>
+<h4 id="LDR指令：从内存读数据"><a href="#LDR指令：从内存读数据" class="headerlink" title="LDR指令：从内存读数据"></a>LDR指令：从内存读数据</h4><p>load register，从存储器将一个32位的字数据传送到目的寄存器。<br>指令格式与实例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LDR&#123;条件&#125; 目的寄存器，存储器地址   &lt;&lt;&lt;&lt;</span><br><span class="line">LDR R0,[R1,#8] ; 将存储器地址为R1+8的字数据读入寄存器R0</span><br></pre></td></tr></table></figure>
+<h4 id="STR指令：往内存写数据"><a href="#STR指令：往内存写数据" class="headerlink" title="STR指令：往内存写数据"></a>STR指令：往内存写数据</h4><p>store register，从源寄存器将一个32位字数据传送到存储器中。<br>指令格式与实例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">STR&#123;条件&#125; 源寄存器，存储器地址    &gt;&gt;&gt;&gt;</span><br><span class="line">STR R0,[R1,#8]  ; 将R0中的数据写入以R1+8为地址的存储器中</span><br></pre></td></tr></table></figure>
+<h4 id="指令条件域"><a href="#指令条件域" class="headerlink" title="指令条件域"></a>指令条件域</h4><p>当处理器工作在ARM状态时，几乎所有指令都根据CPSR中的条件码的状态和指令的条件域有条件的执行。当指令的执行条件满足时，指令执行，否则被忽略。</p>
+<p>如：跳转指令B加载EQ后缀变为BEQ表示相等则跳转，即当CPSR中的Z标志置位时发生跳转。</p>
+<p><img src="/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-02-01%20%E4%B8%8B%E5%8D%887.16.01.png" alt="屏幕快照 2019-02-01 下午7.16.01"></p>
+<ul>
+<li>b:跳转指令，可以带条件跳转，一般配合cmp使用</li>
+<li>bl:带返回的跳转指令，一般用于不同方法调用，执行的操作<ul>
+<li>将下一条指令的地址存储到lr寄存器中</li>
+<li>跳转到标记处开始执行代码</li>
+</ul>
+</li>
+<li>ret:函数返回，将lr(x30)寄存器的值赋值给pc</li>
+<li>cmp指令格式：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmp r1,r0 ; 将寄存器r1的值与寄存器r0的值相减，并根据结果设置CPSR的标志位</span><br></pre></td></tr></table></figure>
+<ul>
+<li>mov指令格式：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mov&#123;条件&#125;&#123;s&#125; 目的寄存器，源操作数 ；s选项决定指令的操作是否影响cpsr中条件标志位的值，没有s则不更新cpsr条件标志位的值</span><br><span class="line">mov r1,r0 ; r0的值给r1  &lt;&lt;&lt;&lt;</span><br><span class="line">add r0,r1,r2 ; r0 = r1 + r2</span><br><span class="line">sub r0,r1,r2 ; r0 = r1 + r2</span><br></pre></td></tr></table></figure>
+<h3 id="寻址方式"><a href="#寻址方式" class="headerlink" title="寻址方式"></a>寻址方式</h3><ul>
+<li>立即数寻址: 操作数本身就在指令中给出</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ADD R0,R0,#1 ; R0&lt;-R0+1</span><br><span class="line">ADD R0,R0,#0x3f ; R0&lt;-R0+0x3f</span><br></pre></td></tr></table></figure>
+<ul>
+<li>寄存器寻址: 利用寄存器中的数值作为操作数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ADD R0,R1,R2  ; R0&lt;-R1+R2</span><br></pre></td></tr></table></figure>
+<ul>
+<li>寄存器间接寻址: 以寄存器中的值作为操作数的地址，而操作数本身存放在存储器中。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LDR R0,[R1]  ; R0&lt;-[R1] 将以R1的值为地址的存储器中的数据传送到R0</span><br><span class="line">STR R0,[R1]  ; R0-&gt;[R1] 将R0的值传送到以R1的值为地址的存储器中</span><br></pre></td></tr></table></figure>
+<ul>
+<li>基址变址寻址: 将寄存器的内容与指令给出的地址偏移量相加，从而得到一个操作数的有效地址，常用于访问某基址附近的地址单元。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LDR R0,[R1,#4] ; R0&lt;-[R1+4] 将寄存器R1的内容加上4形成操作数的有效地址，再取得操作数存入寄存器R0中</span><br><span class="line">LDR R0,[R1,#4]! ; R0&lt;-[R1+4]，R1&lt;-R1+4，在上述的基础上，R1的内容自增4个字节</span><br></pre></td></tr></table></figure>
+<ul>
+<li>相对寻址：与基址变址寻址类似，相对寻址以PC的当前值为基地址，指令中的地址标号作为偏移量，将两者相加后得到操作数的有效地址。BL采用了相对寻址。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    BL NEXT  ; 跳转到子程序NEXT处执行</span><br><span class="line">    ...</span><br><span class="line">NEXT</span><br><span class="line">    ...</span><br><span class="line">    MOV PC，LR ； 从子程序返回</span><br></pre></td></tr></table></figure>
+<h3 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h3><p>汇编中的栈是由高地址向低地址生长的数据结构，sp指针永远指向栈顶。需要记住的是，在某位置进行存储时，是对高地址进行的。</p>
+<p><img src="/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-02-01%20%E4%B8%8A%E5%8D%8811.24.17.png" alt="屏幕快照 2019-02-01 上午11.24.17"></p>
+<p>使用clang可以将其编译为特定指令集的汇编代码，这里我们将其编译为ARM64指令集的汇编代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clang -S -arch arm64 -isysroot `xcrun --sdk iphoneos --show-sdk-path` main.c</span><br></pre></td></tr></table></figure>
+<p>我们只看对test函数的调用，节选这一段汇编代码。<br><img src="/images/F2E5ED94-9E1C-43F1-ABF7-6152D3C826E5.png" alt="F2E5ED94-9E1C-43F1-ABF7-6152D3C826E5"></p>
+<p>test函数涉及了3个int变量，分别是a、b、res，int变量占据4个字节，因此一共需要12个字节，但ARM64汇编为了提高访问效率要求按照16字节进行对齐，因此需要16byte的空间，也就是需要在栈上开辟16字节的空间，我们来看汇编的第一句，正是将sp指针下移16字节。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sub	sp, sp, #16</span><br></pre></td></tr></table></figure>
+<p><img src="/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-02-01%20%E4%B8%8B%E5%8D%887.50.54.png" alt="屏幕快照 2019-02-01 下午7.50.54"></p>
+<p>sp下移16后，留下了4个4字节的内存空格，共计16字节，我们继续看下面的句子。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">str	w0, [sp, #12]</span><br><span class="line">str	w1, [sp, #8]</span><br></pre></td></tr></table></figure>
+<p>这两句的含义是将w0存储在sp+12的格子中，w1存储在sp+8的格子中，上面的例子中提到x0, x1等寄存器将顺序存放函数的入参，x0和w0是同一个寄存器的不同尺寸提现，x0为8字节，w0为x0的前4个字节，因此w0是函数的第一个入参a，w1是函数的第二个入参b，由于存储是从低地址到高地址的，所以a将占据sp+12~sp+16，同理b将占据sp+8~sp+12，则栈的结构变为下图。</p>
+<p><img src="/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-02-01%20%E4%B8%8B%E5%8D%887.53.21.png" alt="屏幕快照 2019-02-01 下午7.53.21"></p>
+<p>接下来test函数应该将a和b相加，需要注意的是，只有寄存器才能参与运算，因此接下来的汇编代码又将变量的值从内存中读出，进行相加运算。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ldr	w0, [sp, #12]</span><br><span class="line">ldr	w1, [sp, #8]</span><br><span class="line">add w0, w0, w1</span><br></pre></td></tr></table></figure>
+<p>由此可见先存储再读取后运算其实是多余的，这是没有进行编译优化的结果，学习不进行编译优化的汇编更能让我们理解其工作机制。</p>
+<p>接下来的代码将w0存入了sp+4，也就是res变量的内存区域。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">str	w0, [sp, #4]</span><br></pre></td></tr></table></figure>
+<p><img src="/images/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-02-01%20%E4%B8%8B%E5%8D%887.55.23.png" alt="屏幕快照 2019-02-01 下午7.55.23"></p>
+<p>接下来就要进行返回了，在例子中我们提到，函数的返回值一般存储在x0寄存器中返回，因此我们需要将res的值载入x0寄存器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ldr	w0, [sp, #4]</span><br></pre></td></tr></table></figure>
+<p>这里之所以使用w寄存器，是因为int为4字节，这也就是类型转换时带来信息丢失的原因，例如从long到int的转换就类似于将x寄存器的值以w的形式进行存储。最后的代码为将栈还原，并返回到函数调用处继续向下执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">add	sp, sp, #16</span><br><span class="line">ret</span><br></pre></td></tr></table></figure>
+<p>显然，经过这样的操作，栈被完全还原到了函数调用以前的样子，需要注意的细节是，栈空间中的内存单元并未被清空，这也就导致下一次使用低地址的栈时，未初始化单元的值是不确定的，这也就是局部变量不初始化值随机的根本原因。</p>
+<p>附录<br><img src="/images/%E6%8C%87%E4%BB%A4%E5%88%97%E8%A1%A801.png" alt="指令列表01"><br><img src="/images/%E6%8C%87%E4%BB%A4%E5%88%97%E8%A1%A802.png" alt="指令列表02"></p>
+<p>参考出处<br><a href="http://iosre.com/t/topic/8179" target="_blank" rel="noopener">http://iosre.com/t/topic/8179</a><br><a href="https://zhuanlan.zhihu.com/c_142064221" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/c_142064221</a><br><a href="https://blog.cnbluebox.com/blog/2017/07/24/arm64-start/" target="_blank" rel="noopener">https://blog.cnbluebox.com/blog/2017/07/24/arm64-start/</a><br><a href="http://jmpews.github.io/2017/08/09/darwin/%E5%8F%8D%E8%B0%83%E8%AF%95%E5%8F%8A%E7%BB%95%E8%BF%87/" target="_blank" rel="noopener">http://jmpews.github.io/2017/08/09/darwin/%E5%8F%8D%E8%B0%83%E8%AF%95%E5%8F%8A%E7%BB%95%E8%BF%87/</a></p>
+
+      
+    </div>
+    
+    
+    
+
+  <div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+  
+  </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/汇编/" rel="tag"><i class="fa fa-tag"></i> 汇编</a>
+          
+            <a href="/tags/ARM64/" rel="tag"><i class="fa fa-tag"></i> ARM64</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/31/iOS调试/" rel="next" title="iOS调试">
+                <i class="fa fa-chevron-left"></i> iOS调试
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="stillStruggle">
+            
+              <p class="site-author-name" itemprop="name">stillStruggle</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/gioxxx2" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#逆向中的反调试"><span class="nav-number">1.</span> <span class="nav-text">逆向中的反调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ARM64入门"><span class="nav-number">2.</span> <span class="nav-text">ARM64入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ARM64寄存器"><span class="nav-number">2.1.</span> <span class="nav-text">ARM64寄存器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ARM64常用指令"><span class="nav-number">2.2.</span> <span class="nav-text">ARM64常用指令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LDR指令：从内存读数据"><span class="nav-number">2.2.1.</span> <span class="nav-text">LDR指令：从内存读数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#STR指令：往内存写数据"><span class="nav-number">2.2.2.</span> <span class="nav-text">STR指令：往内存写数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#指令条件域"><span class="nav-number">2.2.3.</span> <span class="nav-text">指令条件域</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#寻址方式"><span class="nav-number">2.3.</span> <span class="nav-text">寻址方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#栈"><span class="nav-number">2.4.</span> <span class="nav-text">栈</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">stillStruggle</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+<br>
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共10.8k字</span>
+</div>
+<br>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
